@@ -1,6 +1,6 @@
 # Buckets
 
-## Basic operations with S3 Buckets
+# Basic operations with S3 Buckets
 
 ### List all buckets
 
@@ -62,7 +62,7 @@ aws s3 rb s3://<your bucket name> --force
 </p>
 </details>
 
-## Operations with objects
+# Operations with objects
 
 ### Create an index.html, css/index.css, js/index.js and upload them to a s3 bucket, you can use the next commands:
 
@@ -223,6 +223,131 @@ aws s3 mv s3://<your bucket name source>/index.css s3://<your bucket name destin
 aws s3 rm s3://<your bucket name>/index.html
 or
 aws s3 rm s3://<your bucket name> --recursive
+```
+
+</p>
+</details>
+
+# Permissions and ACL
+
+Note: It’s actually not recommended to use ACL permissions on buckets, but it’s worth learning them anyway.
+
+## Basic permissions
+
+- READ → Allows reading the object or listing the bucket.
+
+- WRITE → Allows uploading or modifying objects in the bucket.
+
+- READ_ACP → Allows reading the ACL configuration.
+
+- WRITE_ACP → Allows modifying the ACL configuration.
+
+- FULL_CONTROL → Allows all of the above.
+
+### List all permissions in your s3 bucket
+
+---
+
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+
+```bash
+aws s3api get-bucket-acl --bucket <your bucket name>
+```
+
+</p>
+</details>
+
+### Upload an object to your S3 bucket and make it publicly accessible
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3 cp ./index.html s3://<your bucket name> --acl public-read
+```
+
+</p>
+</details>
+
+### Create an S3 bucket with public write permissions
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3api create-bucket --bucket <your bucket name> --acl public-write
+```
+
+</p>
+</details>
+
+### Grant full public access and control to a bucket
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3api put-object-acl --bucket <your bucket name> --acl public-read-write
+```
+
+</p>
+</details>
+
+### Make an object ACL readable by the owner
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3api put-object-acl --bucket <your bucket name> --key index.html --acl bucket-owner-read
+```
+
+
+</p>
+</details>
+
+### Make an object ACL modifiable by the owner
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+
+```bash
+aws s3api put-object-acl --bucket <your bucket name> --key index.html --acl bucket-owner-full-control
+```
+
+</p>
+</details>
+
+### Make aunthenticated users to see and download files from your bucket
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3api put-object-acl --bucket <your bucket name> --acl authenticated-users
 ```
 
 </p>
