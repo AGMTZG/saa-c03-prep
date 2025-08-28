@@ -426,7 +426,7 @@ aws s3api put-object-acl --bucket <your bucket name> --acl authenticated-read
 <p>
 
 ```bash
-aws s3api put-object-acl --bucket <your bucket name> --key index.html --acl aws-exec-read
+aws s3api put-object-acl --bucket <your bucket name> --acl aws-exec-read
 ```
 
 </p>
@@ -485,7 +485,7 @@ aws s3api put-object-acl --bucket <your bucket name> --key <file> --grant-read '
 </p>
 </details>
 
-Grant to another AWS account FULL CONTROL to an object
+### Grant to another AWS account FULL CONTROL to an object
 
 ---
 
