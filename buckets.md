@@ -402,7 +402,7 @@ aws s3api put-object-acl --bucket <your bucket name> --key index.html --acl buck
 </p>
 </details>
 
-### Make aunthenticated users to see and download files from your bucket
+### Allow any authenticated AWS user to read and download objects from your bucket
 
 ---
 
@@ -417,7 +417,7 @@ aws s3api put-bucket-acl --bucket <your bucket name> --acl authenticated-read
 </p>
 </details>
 
-### Allow Aws services to read and execute objects in your s3 bucket
+### Allow selected AWS services to read and execute objects in your bucket
 
 ---
 
@@ -426,7 +426,7 @@ aws s3api put-bucket-acl --bucket <your bucket name> --acl authenticated-read
 <p>
 
 ```bash
-aws s3api put-object-acl --bucket <your bucket name> --acl aws-exec-read
+aws s3api put-bucket-acl --bucket <your bucket name> --acl aws-exec-read
 ```
 
 </p>
