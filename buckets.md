@@ -595,7 +595,22 @@ aws s3api get-bucket-encryption --bucket  <your bucket name>
 </p>
 </details>
 
-# Logs, tags, lifecycle policies
+# Logs, tags, multipart uploading, cross region
+
+### Create a bucket in region us-east-1
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3api create-bucket --bucket <your bucket name> --region us-east-1
+```
+
+</p>
+</details>
 
 ### Enable S3 bucket logging to track access logs, cross region replication
 
@@ -668,6 +683,88 @@ aws s3api abort-multipart-upload --bucket <your bucket name> --key <file> --uplo
 
 </p>
 </details>
+
+# Storage classes and lifecycle policies
+
+Storage classes(You assign a storage class when uploading objects):
+
+- STANDARD → frequent access storage, more expensive.
+
+- STANDARD_IA → infrequent access, cheaper, designed for objects that are rarely accessed.
+
+- GLACIER → long-term archiving, cheaper, slower retrieval.
+
+- DEEP_ARCHIVE → very long-term archiving, minimal cost, even slower retrieval.
+
+- ONEZONE_IA → Infrequent access
+
+- INTELLIGENT_TIERING  → automatically moves objects between tiers based on access patterns.
+
+### Upload an object using storage class STANDARD_IA
+
+---
+
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3api put-object --bucket <your bucket name> --key <file> --body ./<file location>/ --storage-class STANDARD_IA
+```
+
+</p>
+</details>
+
+### Upload an object using GLACIER storage class
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3api put-object --bucket <your bucket name> --key <file> --body ./<file location>/ --storage-class GLACIER
+```
+
+</p>
+</details>
+
+### Create an S3 lifecycle policy that automatically deletes objects older than 30 days or transitions them to Glacier storage
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3api put-bucket-lifecycle-configuration --bucket <your bucket name> --lifecycle-configuration file://lifecycle.json
+```
+
+</p>
+</details>
+
+### Transition objects older than 60 days to STANDARD_IA
+
+---
+
+
+
+### Auto-delete objects older than 365 days
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3api put-bucket-lifecycle-configuration --bucket <your bucket name> --lifecycle-configuration file://lifecycle-expire.json
+```
+
+</p>
+</details>
+
 
 # Other useful utilities
 
