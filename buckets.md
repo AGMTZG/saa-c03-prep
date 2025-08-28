@@ -432,21 +432,6 @@ aws s3api put-object-acl --bucket <your bucket name> --acl aws-exec-read
 </p>
 </details>
 
-### Give S3 log delivery group access to a bucket (To enable logging). (The S3 log delivery group is a special AWS group that allows S3 to automatically deliver log files to your bucket)
-
----
-
-<details>
-<summary>Show commands / answers</summary>
-<p>
-
-```bash
-aws s3api put-bucket-acl --bucket <your bucket name> --grant-write 'URI="http://acs.amazonaws.com/groups/s3/LogDelivery"'
-```
-
-</p>
-</details>
-
 # Grant permissions to an specific user (Note: The grant permissions only works with canonical users (Root users, not IAM users))
 
 - grant-read	 →  Allows reading the object
@@ -525,6 +510,21 @@ aws s3api put-object-acl --bucket <your bucket name> --key <file> --grant-write-
 
 ```bash
 aws s3api put-bucket-acl --bucket <your bucket name> --grant-write 'id=<user id>'
+```
+
+</p>
+</details>
+
+### Give S3 log delivery group access to a bucket (To enable logging). (The S3 log delivery group is a special AWS group that allows S3 to automatically deliver log files to your bucket)
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3api put-bucket-acl --bucket <your bucket name> --grant-write 'URI="http://acs.amazonaws.com/groups/s3/LogDelivery"'
 ```
 
 </p>
