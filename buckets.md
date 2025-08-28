@@ -64,7 +64,7 @@ aws s3 rb s3://<your bucket name> --force
 
 # Operations with objects
 
-### Create an index.html, css/index.css, js/index.js and upload them to a s3 bucket, you can use the next commands:
+### Create an index.html, css/index.css, js/index.js and upload index.js to a s3 bucket, you can use the next commands:
 
 ```bash
 echo "Hello World" > $(pwd)/index.html
