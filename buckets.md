@@ -249,7 +249,10 @@ Note: It’s actually not recommended to use ACL permissions on buckets, but it�
 - s3:GetObject → Lecture permissions
 - s3:PutObject → Uploading permissions
 - s3:DeleteObject →  Deleting permissions
+- s3:DeleteObjectVersion → Delete specefic version permissions
 - s3:ListObject →  Get objects permissions
+- s3:ListBucketVersions → Get versions of bucket
+- s3:ListBucketMultipartUploads → Check large uploaded files 
 
 ### List all permissions in your s3 bucket
 
@@ -300,7 +303,7 @@ aws s3api get-object-acl --bucket <your bucket name> --key <your file route>
 </p>
 </details>
 
-### Create an S3 bucket with public write permissions
+### Create an S3 bucket that allows public uploading of objects using a bucket policy
 
 ---
 
@@ -309,7 +312,9 @@ aws s3api get-object-acl --bucket <your bucket name> --key <your file route>
 <p>
 
 ```bash
-aws s3api create-bucket --bucket <your bucket name> --acl public-write
+aws s3api create-bucket --bucket <your bucket name> --region us-east-1
+aws s3api put-bucket-policy --bucket <your bucket name> --policy \
+'{"Version":"2022-10-17","Statement":[{"Effect":"Allow","Principal":"*","Action":["s3:PutObject"],"Resource":["arn:aws:s3:::<your bucket name>/*"]}]}'
 ```
 
 </p>
