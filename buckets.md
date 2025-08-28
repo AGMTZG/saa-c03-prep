@@ -718,6 +718,8 @@ aws s3api put-object --bucket <your bucket name> --key <file> --body ./<file loc
 
 ### Upload an object using GLACIER storage class
 
+---
+
 <details>
 <summary>Show commands / answers</summary>
 <p>
@@ -748,7 +750,16 @@ aws s3api put-bucket-lifecycle-configuration --bucket <your bucket name> --lifec
 
 ---
 
+<details>
+<summary>Show commands / answers</summary>
+<p>
 
+```bash
+aws s3api put-bucket-lifecycle-configuration --bucket <your bucket name> --lifecycle-configuration file://lifecycle-standard-ia.json
+```
+
+</p>
+</details>
 
 ### Auto-delete objects older than 365 days
 
