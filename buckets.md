@@ -530,7 +530,7 @@ aws s3api put-bucket-versioning --bucket <your bucket name> --versioning-configu
 </p>
 </details>
 
-View versioning in your bucket
+### View versioning in your bucket
 
 ---
 
