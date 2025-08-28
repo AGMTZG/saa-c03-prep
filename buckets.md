@@ -411,7 +411,7 @@ aws s3api put-object-acl --bucket <your bucket name> --key index.html --acl buck
 <p>
 
 ```bash
-aws s3api put-object-acl --bucket <your bucket name> --acl authenticated-read
+aws s3api put-bucket-acl --bucket <your bucket name> --acl authenticated-read
 ```
 
 </p>
