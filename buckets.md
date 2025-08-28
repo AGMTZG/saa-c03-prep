@@ -485,12 +485,143 @@ aws s3api put-bucket-acl --bucket <your bucket name> --grant-write 'id=<user id>
 
 ### Combine multiple grants
 
+---
+
 <details>
 <summary>Show commands / answers</summary>
 <p>
 
 ```bash
 aws s3api put-object-acl --bucket <your bucket name> --key <file> --grant-read 'id=<user id 1>' --grant-full-control 'id=<user id 2>'
+```
+
+</p>
+</details>
+
+# Versioning
+
+### Enable versioning to the s3 bucket
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3api put-bucket-versioning --bucket <your bucket name> --versioning-configuration Status=Enabled
+```
+
+</p>
+</details>
+
+View versioning in your bucket
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3api get-bucket-versioning --bucket mi-bucket
+```
+
+</p>
+</details>
+
+### Delete a specific version of an object in a versioned bucket, without affecting other versions.
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3api delete-object --bucket <your bucket name> --key <file> --version-id <VersionID>
+```
+
+</p>
+</details>
+
+# Encryption
+
+### Enable default bucket encryption
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3api put-bucket-encryption --bucket <your bucket name> --server-side-encryption-configuration '{
+  "Rules":[{"ApplyServerSideEncryptionByDefault":{"SSEAlgorithm":"AES256"}}]
+}'
+```
+
+</p>
+</details>
+
+### View encryption
+
+---
+
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3api get-bucket-encryption --bucket  <your bucket name>
+```
+
+</p>
+</details>
+
+# Other useful utilities
+
+### List objects with details and filter using --query
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3api list-objects --bucket  <your bucket name> --query "Contents[].{Key: Key, Size: Size}"
+```
+
+</p>
+</details>
+
+### Probar comandos sin firmar (solo lectura pública)
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3 ls s3:// <your bucket name> --no-sign-request
+```
+
+</p>
+</details>
+
+### View bucket policies
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3api get-bucket-policy --bucket <your bucket name>
 ```
 
 </p>
