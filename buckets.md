@@ -254,7 +254,7 @@ Note: It’s actually not recommended to use ACL permissions on buckets, but it�
 - s3:ListBucketVersions → Get versions of bucket
 - s3:ListBucketMultipartUploads → Check large uploaded files 
 
-### List all permissions in your s3 bucket
+### List the ACL permissions of your S3 bucket
 
 ---
 
