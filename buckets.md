@@ -291,6 +291,21 @@ aws s3api create-bucket --bucket <your bucket name> --acl public-write
 </p>
 </details>
 
+### Create a private bucket
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+  
+```bash
+aws s3api create-bucket --bucket <your bucket name> --acl private
+```
+
+</p>
+</details>
+
 ### Grant full public access and control to a bucket
 
 ---
@@ -322,7 +337,7 @@ aws s3api put-object-acl --bucket <your bucket name> --key index.html --acl buck
 </p>
 </details>
 
-### Make an object ACL modifiable by the owner
+### Grant the owner full control of an object
 
 ---
 
@@ -347,7 +362,37 @@ aws s3api put-object-acl --bucket <your bucket name> --key index.html --acl buck
 <p>
 
 ```bash
-aws s3api put-object-acl --bucket <your bucket name> --acl authenticated-users
+aws s3api put-object-acl --bucket <your bucket name> --acl authenticated-read
+```
+
+</p>
+</details>
+
+### Allow Aws services to read and execute objects in your s3 bucket
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3api put-object-acl --bucket <your bucket name> --key index.html --acl aws-exec-read
+```
+
+</p>
+</details>
+
+### Give S3 log delivery group access to a bucket (To enable logging)
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3api put-bucket-acl --bucket <your bucket name> --grant-write 'URI="http://acs.amazonaws.com/groups/s3/LogDelivery"'
 ```
 
 </p>
@@ -360,3 +405,4 @@ aws s3api put-object-acl --bucket <your bucket name> --acl authenticated-users
 - grant-read-acp	→  Allows reading the ACLs
 - grant-write-acp	→  Allows modifying the ACLs
 - grant-full-control	→  Grants all of the above permissions
+
