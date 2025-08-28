@@ -498,6 +498,21 @@ aws s3api put-object-acl --bucket <your bucket name> --key <file> --grant-read '
 </p>
 </details>
 
+### Give temporary access to private objects
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3 presign s3://<your bucket name>/<file> --expires-in 3600
+```
+
+</p>
+</details>
+
 # Versioning
 
 ### Enable versioning to the s3 bucket
@@ -575,6 +590,80 @@ aws s3api put-bucket-encryption --bucket <your bucket name> --server-side-encryp
 
 ```bash
 aws s3api get-bucket-encryption --bucket  <your bucket name>
+```
+
+</p>
+</details>
+
+# Logs, tags, lifecycle policies
+
+### Enable S3 bucket logging to track access logs, cross region replication
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3api put-bucket-logging --bucket <your bucket name> --bucket-logging-status file://logging.json
+```
+
+</p>
+</details>
+
+### Add tags to organize resources in your buckets
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3api put-bucket-tagging --bucket <your bucket name> --tagging 'TagSet=[{Key=Environment,Value=Dev}]'
+```
+
+</p>
+</details>
+
+### Replicate objects to another bucket
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3api put-bucket-replication --bucket <your source bucket name> --replication-configuration file://replication.json
+```
+
+</p>
+</details>
+
+### Initiate Multipart Upload (For large files)
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+# Initiate Multipart Upload - It returns you an upload-id
+aws s3api create-multipart-upload --bucket <your bucket name> --key <file>
+
+# Upload Parts
+# part-number ranges from 1 to 10,000.
+# Each part except the last must be at least 5 MB.
+aws s3api upload-part --bucket <your bucket name> --key <file> --part-number <part-number> --body <file-part> --upload-id <upload-id>
+# Example:
+aws s3api upload-part --bucket mi-bucket --key file.zip --part-number 1 --body parte1.zip --upload-id <upload-id>
+# Complete Multipart Upload
+aws s3api complete-multipart-upload --bucket <your bucket name> --key <file> --upload-id <upload-id> --multipart-upload file://parts.json
+# Abort Multipart Upload (if needed)
+aws s3api abort-multipart-upload --bucket <your bucket name> --key <file> --upload-id <upload-id>
 ```
 
 </p>
