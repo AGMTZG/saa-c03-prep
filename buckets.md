@@ -271,6 +271,8 @@ aws s3api get-bucket-acl --bucket <your bucket name>
 
 ```bash
 aws s3 cp ./index.html s3://<your bucket name> --acl public-read
+or
+aws s3api put-bucket-policy --bucket mi-bucket --policy '{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":"*","Action":["s3:GetObject"],"Resource":["arn:aws:s3:::mi-bucket/*"]}]}'
 ```
 
 </p>
