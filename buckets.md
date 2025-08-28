@@ -246,10 +246,10 @@ Note: It’s actually not recommended to use ACL permissions on buckets, but it�
 
 ## Policies
 
-- s3:GetObject
-- s3:PutObject
-- s3:DeleteObject
-- s3:ListObject
+- s3:GetObject → Lecture permissions
+- s3:PutObject → Uploading permissions
+- s3:DeleteObject →  Deleting permissions
+- s3:ListObject →  Get objects permissions
 
 ### List all permissions in your s3 bucket
 
