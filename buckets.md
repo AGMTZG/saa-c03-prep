@@ -485,7 +485,7 @@ aws s3api put-object-acl --bucket <your bucket name> --key <file> --grant-full-c
 </p>
 </details>
 
-### Grant to another aws account the ability to change ACLs
+### Grant to another aws account the ability to change ACLs to an object
 
 ---
 
