@@ -181,7 +181,7 @@ aws s3 sync s3://<your bucket source>  s3://<your bucket destination>
 </p>
 </details>
 
-### Copy the index html in another s3 bucket
+### Copy the index html from a bucket to another s3 bucket
 
 ---
 
@@ -190,7 +190,7 @@ aws s3 sync s3://<your bucket source>  s3://<your bucket destination>
 <p>
 
 ```bash
-aws s3 cp s3://<your bucket name source>/<your file> s3://<your bucket name destination>/
+aws s3 cp s3://<your bucket name source>/index.html s3://<your bucket name destination>/index.html
 ```
 
 </p>
