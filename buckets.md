@@ -500,7 +500,7 @@ aws s3api put-object-acl --bucket <your bucket name> --key <file> --grant-write-
 </p>
 </details>
 
-### Grant WRITE access to a bucket
+### Grant upload permissions to a bucket to another user
 
 ---
 
