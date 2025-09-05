@@ -738,6 +738,23 @@ aws s3api put-bucket-tagging --bucket <your bucket name> --tagging 'TagSet=[{Key
 
 ```bash
 aws s3api put-bucket-replication --bucket <your source bucket name> --replication-configuration file://replication.json
+
+# Replication.json
+{
+  "Role": "arn:aws:iam::123456789012:role/replication-role",
+  "Rules": [
+    {
+      "ID": "ReplicationRule1",
+      "Status": "Enabled",
+      "Prefix": "", 
+      "Destination": {
+        "Bucket": "arn:aws:s3:::destination-bucket-name",
+        "StorageClass": "STANDARD"
+      }
+    }
+  ]
+}
+
 ```
 
 </p>
