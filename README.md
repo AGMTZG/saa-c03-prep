@@ -14,10 +14,10 @@ services:
     image: localstack/localstack
     container_name: localstack_main
     ports:
-      - "4566:4566" # puerto principal
-      - "4571:4571" # puerto legacy
+      - "4566:4566"
+      - "4571:4571"
     environment:
-      - SERVICES=s3,dynamodb,lambda # servicios que quieres levantar
+      - SERVICES=s3,dynamodb,lambda
       - DEBUG=1
       - DATA_DIR=/tmp/localstack/data
     volumes:
