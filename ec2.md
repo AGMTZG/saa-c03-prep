@@ -242,7 +242,7 @@ aws ec2 describe-instances --instance-ids <instance-id> --query 'Reservations[*]
 
 # Security Groups
 
-### List all Security Groups
+### List all Security Groups in your AWS account to view their IDs, names, and associated rules
 
 ---
 
@@ -257,7 +257,7 @@ aws ec2 describe-security-groups
 </p>
 </details>
 
-### Create a security group
+### Create a new Security Group in your AWS account to define network access rules for your resources
 
 ---
 
@@ -275,7 +275,7 @@ aws ec2 create-security-group \
 </p>
 </details>
 
-### Add inbound rule
+### Add an inbound rule to a Security Group to allow specific types of network traffic to reach your resources
 
 ---
 
@@ -294,7 +294,7 @@ ws ec2 authorize-security-group-ingress \
 </p>
 </details>
 
-### Add outbound rule
+### Add an outbound rule to a Security Group to allow specific types of network traffic to leave your resources
 
 ---
 
@@ -315,7 +315,7 @@ aws ec2 authorize-security-group-egress \
 
 # Elastic IPs
 
-### Allocate a new Elastic IP
+### Allocate a new Elastic IP address in your AWS account to assign a static public IP to an instance or resource
 
 ---
 
@@ -330,7 +330,7 @@ aws ec2 allocate-address
 </p>
 </details>
 
-### Associate Elastic IP with instance
+### Associate an Elastic IP address with a specific EC2 instance to give it a static public IP
 
 ---
 
@@ -345,7 +345,7 @@ aws ec2 associate-address --instance-id <instance-id> --allocation-id <allocatio
 </p>
 </details>
 
-### Release Elastic IP
+### Release an Elastic IP address to remove it from your AWS account and make it available for other users
 
 ---
 
@@ -362,7 +362,7 @@ aws ec2 release-address --allocation-id <allocation-id>
 
 # Volumes and EBS
 
-### List volumes
+### List all EBS volumes in your AWS account to view their IDs, sizes, states, and attached instances
 
 ---
 
@@ -377,7 +377,7 @@ aws ec2 describe-volumes
 </p>
 </details>
 
-### Create a new volume
+### Create a new EBS volume
 
 ---
 
@@ -395,7 +395,7 @@ aws ec2 create-volume \
 </p>
 </details>
 
-### Attach volume to instance
+### Attach an EBS volume to a specific EC2 instance
 
 ---
 
@@ -413,7 +413,7 @@ aws ec2 attach-volume \
 </p>
 </details>
 
-### Detach volume
+### Detach an EBS volume from a specific EC2 instance
 
 ---
 
@@ -428,7 +428,7 @@ aws ec2 detach-volume --volume-id <volume-id>
 </p>
 </details>
 
-### Delete volume
+### Delete an EBS volume to permanently remove it from your AWS account
 
 ---
 
