@@ -83,7 +83,7 @@ aws ec2 reboot-instances --instance-ids <instance-id>
 </p>
 </details>
 
-### Terminate an EC2 instance to permanently delete it, including its associated resources
+### Terminate an EC2 instance
 
 ---
 
@@ -118,7 +118,7 @@ ssh -i MyKey.pem <AMi>/<public-instance-ip>
 </p>
 </details>
 
-### List all key pairs in your AWS account to view their names and associated information
+### List all key pairs in your AWS account
 
 ---
 
