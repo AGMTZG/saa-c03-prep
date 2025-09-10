@@ -2,7 +2,7 @@
 
 # Basic operations with EC2
 
-### List all instances
+### Retrieve a list of all EC2 instances in your environment
 
 ---
 
@@ -17,7 +17,7 @@ aws ec2 describe-instances
 </p>
 </details>
 
-### Create a new EC2 instance
+### Launch a new EC2 instance using an Ubuntu AMI with instance type t2.micro
 
 ---
 
@@ -38,7 +38,7 @@ aws ec2 run-instances \
 </p>
 </details>
 
-### Start the instance
+### Start a stopped EC2 instance to make it running and accessible
 
 ---
 
@@ -53,7 +53,7 @@ aws ec2 start-instances --instance-ids <instance-id>
 </p>
 </details>
 
-### Stop the instance
+### Stop a running EC2 instance to temporarily shut it down while preserving its configuration
 
 ---
 
@@ -68,7 +68,7 @@ aws ec2 stop-instances --instance-ids <instance-id>
 </p>
 </details>
 
-### Reboot the instance
+### Reboot a running EC2 instance to restart it without changing its configuration or losing data
 
 ---
 
@@ -83,7 +83,7 @@ aws ec2 reboot-instances --instance-ids <instance-id>
 </p>
 </details>
 
-### Terminate the instance
+### Terminate an EC2 instance to permanently delete it, including its associated resources
 
 ---
 
@@ -118,7 +118,7 @@ ssh -i MyKey.pem <AMi>/<public-instance-ip>
 </p>
 </details>
 
-### List all key pairs
+### List all key pairs in your AWS account to view their names and associated information
 
 ---
 
@@ -133,7 +133,68 @@ aws ec2 describe-key-pairs
 </p>
 </details>
 
-# Security Groups
+# Information of you EC2 instance
+
+### Find the Instance ID of the EC2 instance
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws ec2 describe-instances --query "Reservations[*].Instances[*].[InstanceId,Tags[?Key=='Name'].Value]" --output table
+```
+
+</p>
+</details>
+
+### Find the VPC ID of the EC2 instance
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws ec2 describe-instances --instance-ids <INSTANCE_ID> --query "Reservations[0].Instances[0].VpcId" --output text
+```
+
+</p>
+</details>
+
+### Find the Subnet ID of the EC2 instance
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws ec2 describe-instances --instance-ids <INSTANCE_ID> --query "Reservations[0].Instances[0].SubnetId" --output text
+```
+
+</p>
+</details>
+
+### Find the Security Group ID attached to your EC2 instance
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws ec2 describe-instances --instance-ids <INSTANCE_ID> --query "Reservations[0].Instances[0].SecurityGroups[*].GroupId" --output text
+```
+
+</p>
+</details>
+
 
 ### List all Security Groups
 
@@ -163,6 +224,21 @@ aws ec2 create-security-group \
   --group-name MySG \
   --description "My security group" \
   --vpc-id <vpc-id>
+```
+
+</p>
+</details>
+
+### Retrieve the public IP address of a specific EC2 instance
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+  
+```bash
+aws ec2 describe-instances --instance-ids <INSTANCE_ID> --query "Reservations[0].Instances[0].PublicIpAddress" --output text
 ```
 
 </p>
