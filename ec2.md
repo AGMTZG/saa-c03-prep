@@ -362,7 +362,7 @@ aws ec2 release-address --allocation-id <allocation-id>
 
 # Volumes and EBS
 
-### List all EBS volumes in your AWS account to view their IDs, sizes, states, and attached instances
+### List all EBS volumes in your AWS account
 
 ---
 
@@ -445,7 +445,7 @@ aws ec2 delete-volume --volume-id <volume-id>
 
 # AMIs (Amazon Machine Images)
 
-List all available AMIs
+###List all available Amazon Machine Images (AMIs) in your AWS account or region
 
 ---
 
@@ -462,7 +462,7 @@ aws ec2 describe-images --owners self amazon
 
 # Tags
 
-List all instance tags
+### List all tags associated with your EC2 instances
 
 ---
 
@@ -477,7 +477,7 @@ aws ec2 describe-tags --filters "Name=resource-id,Values=<instance-id>"
 </p>
 </details>
 
-### Add a tag to an instance
+### Add a tag to an EC2 instance
 
 ---
 
