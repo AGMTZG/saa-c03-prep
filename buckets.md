@@ -967,7 +967,7 @@ aws s3api list-objects --bucket  <your bucket name> --query "Contents[].{Key: Ke
 </p>
 </details>
 
-### Test commands without signing (public-read only) - This allow to list objects without credetials only if they are public access
+### List public objects in a bucket without using credentials by skipping the request signature.
 
 ---
 
