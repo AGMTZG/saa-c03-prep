@@ -445,7 +445,7 @@ aws ec2 delete-volume --volume-id <volume-id>
 
 # AMIs (Amazon Machine Images)
 
-###List all available Amazon Machine Images (AMIs) in your AWS account or region
+### List all available Amazon Machine Images (AMIs) in your AWS account or region
 
 ---
 
@@ -494,7 +494,7 @@ aws ec2 create-tags --resources <instance-id> --tags Key=Name,Value=MyInstance
 
 # Monitoring & Logs
 
-### Get instance status
+### Get the current status of an EC2 instance
 
 ---
 
@@ -541,7 +541,7 @@ aws ec2 unmonitor-instances --instance-ids <instance-id>
 
 # Miscellaneous
 
-### Create snapshot of a volume
+### Create a snapshot of an EBS volume to back up its current state and data
 
 ---
 
@@ -556,7 +556,7 @@ aws ec2 create-snapshot --volume-id <volume-id> --description "My snapshot"
 </p>
 </details>
 
-### List all snapshots
+### List all EBS snapshots in your AWS account
 
 ---
 
