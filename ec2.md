@@ -176,6 +176,7 @@ aws ec2 describe-instances --query "Reservations[*].Instances[*].[InstanceId,Tag
 
 ```bash
 aws ec2 describe-instances --instance-ids <INSTANCE_ID> --query "Reservations[0].Instances[0].VpcId" --output text
+aws ec2 describe-vpcs --query "Vpcs[].VpcId" --output text
 ```
 
 </p>
