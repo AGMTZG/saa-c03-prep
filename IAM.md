@@ -179,6 +179,21 @@ aws iam detach-user-policy \
 </p>
 </details>
 
+## List policies attached in an user
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws iam list-attached-user-policies --user-name <your user>
+```
+</p>
+</details>
+
+
 ## Create inline policy for user (custom policy created by you)
 
 ---
