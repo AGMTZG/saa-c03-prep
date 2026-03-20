@@ -212,6 +212,22 @@ aws ec2 describe-instances --instance-ids <INSTANCE_ID> --query "Reservations[0]
 </p>
 </details>
 
+### List all security groups with details such as Name, Description and ID
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws ec2 describe-security-groups --query 'SecurityGroups[].{Name:GroupName,Description:Description,ID:GroupId}' --output table
+```
+
+</p>
+</details>
+
+
 ### Retrieve the public IP address of a specific EC2 instance
 
 ---
