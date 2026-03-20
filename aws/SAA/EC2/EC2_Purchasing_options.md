@@ -1,104 +1,98 @@
-# 🧾 AWS EC2 Purchasing Options – Cheat Sheet
+# 🧠 EC2 Purchasing Options = Problems They Solve
 
-## 🟢 On-Demand
-- **Pricing:** Pay per second (Linux/Windows) or hourly
-- **Commitment:** None
-- **Cost:** Highest
-- **Use case:** Short-term, unpredictable workloads
-- **Key idea:** Flexibility > cost
+## 🟢 On-Demand  
+> ❓ *“I don’t know what will happen”*
 
----
+- Unpredictable traffic  
+- Short-term usage  
+- Need instant start/stop  
 
-## 🔵 Reserved Instances (RI)
-- **Commitment:** 1 or 3 years
-- **Discount:** Up to ~72%
-- **Scope:** Region or AZ (Zonal = capacity reservation)
-- **Payment options:** No / Partial / All upfront
-- **Use case:** Steady-state workloads (databases)
-
-### Variants:
-- **Standard RI:** Highest discount, least flexible  
-- **Convertible RI:** Lower discount, can change instance type/OS  
+✅ **Solution:** maximum flexibility  
+❌ **Tradeoff:** expensive  
 
 ---
 
-## 🟣 Savings Plans
-- **Commitment:** $/hour for 1 or 3 years
-- **Discount:** Up to ~72%
-- **Flexibility:** High (size, OS, tenancy)
-- **Types:**
-  - **Compute Savings Plan:** Most flexible
-  - **EC2 Instance Savings Plan:** Limited to family + region
-- **Use case:** Predictable usage with flexibility
+## 🔵 Reserved Instances (RI)  
+> 📊 *“I know exactly what I’ll use”*
+
+- Steady workload (e.g. database)  
+- Long-running systems  
+- Predictable capacity  
+
+✅ **Solution:** big discount for committing  
+❌ **Tradeoff:** low flexibility  
 
 ---
 
-## 🟡 Spot Instances
-- **Discount:** Up to ~90% (cheapest)
-- **Risk:** Can be terminated anytime
-- **Use case:**
-  - Batch jobs
-  - Big data / ML
-  - Fault-tolerant systems
-- ❌ Not for critical workloads or databases
+## 🟣 Savings Plans  
+> 🔄 *“I know I’ll use compute, but not exactly how”*
+
+- Predictable usage but changing configs  
+- Might switch instance types  
+
+✅ **Solution:** discount + flexibility  
+❌ **Tradeoff:** time commitment  
 
 ---
 
-## 🔴 Dedicated Hosts
-- **Hardware:** Entire physical server
-- **Control:** Full (socket/core visibility)
-- **Cost:** Most expensive
-- **Use case:**
-  - Compliance
-  - BYOL (Bring Your Own License)
+## 🟡 Spot Instances  
+> 💸 *“I want the cheapest compute possible”*
+
+- Can tolerate interruptions  
+- Distributed / fault-tolerant systems  
+
+✅ **Solution:** massive cost savings  
+❌ **Tradeoff:** can be terminated anytime  
 
 ---
 
-## 🟠 Dedicated Instances
-- **Hardware:** Dedicated to you (no shared tenants)
-- **Control:** Less than Dedicated Hosts
-- **Use case:** Isolation without full hardware control
+## 🔴 Dedicated Hosts  
+> ⚖️ *“I have licensing or compliance constraints”*
+
+- BYOL (per-core, per-socket licenses)  
+- Regulatory requirements  
+
+✅ **Solution:** full physical server control  
+❌ **Tradeoff:** very expensive  
 
 ---
 
-## 🟤 Capacity Reservations
-- **Guarantee:** Capacity in a specific AZ
-- **Billing:** On-Demand (even if unused)
-- **Commitment:** None
-- **Use case:** Must-have capacity (critical workloads)
+## 🟠 Dedicated Instances  
+> 🔐 *“I need isolation, but not full hardware control”*
+
+- No shared hardware with other customers  
+
+✅ **Solution:** tenant isolation  
+❌ **Tradeoff:** less control than hosts  
 
 ---
 
-# 🧠 Exam Traps & Key Differences
+## 🟤 Capacity Reservations  
+> 🚨 *“I MUST have capacity available”*
 
-### 🔥 Spot vs On-Demand
-- Spot = cheap + interruptible  
-- On-Demand = stable + expensive  
+- Critical workloads  
+- Need guaranteed capacity in AZ  
 
----
-
-### 🔥 RI vs Savings Plans
-- RI = reserve specific instance  
-- Savings Plans = commit to **spend**, more flexible  
+✅ **Solution:** capacity guarantee  
+❌ **Tradeoff:** no discount, pay even if unused  
 
 ---
 
-### 🔥 Zonal RI vs Capacity Reservation
-- **Zonal RI:** discount + capacity  
-- **Capacity Reservation:** capacity only (no discount)  
+# ⚡ Ultra-Compact Mental Model
+
+- Don’t know usage → **On-Demand**  
+- Know usage → **Reserved / Savings Plans**  
+- Want cheapest → **Spot**  
+- Need compliance → **Dedicated Hosts**  
+- Need isolation → **Dedicated Instances**  
+- Need guaranteed capacity → **Capacity Reservations**  
 
 ---
 
-### 🔥 Dedicated Hosts vs Instances
-- **Hosts:** full physical control (BYOL)  
-- **Instances:** just isolation  
+# 🧪 Quick Decision Framework
 
----
+Ask yourself:
 
-# ⚡ Quick Decision Guide
-
-- Unpredictable → **On-Demand**
-- Long-term stable → **Reserved / Savings Plans**
-- Cheap + fault-tolerant → **Spot**
-- Compliance / licensing → **Dedicated Hosts**
-- Guaranteed capacity → **Capacity Reservation**
+1. Is usage predictable?  
+2. Can the workload be interrupted?  
+3. Do I need guaranteed capacity or compliance?  
