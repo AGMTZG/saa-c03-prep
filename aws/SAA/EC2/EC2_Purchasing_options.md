@@ -192,3 +192,48 @@ Ask yourself:
 - Spot Fleet → automated orchestration  
 - Spot Block → legacy, mostly ignore   
   
+# 🧠 AWS Placement Groups – Simple Explanation
+
+## What are Placement Groups for?
+They let you **control how AWS physically places your EC2 instances** on hardware.
+
+👉 Basically: you decide if instances should be **close together or far apart**
+
+---
+
+## 🔹 Types
+
+### 1. Cluster
+- Instances are **very close together**
+- 🔥 Low latency, high throughput  
+- Use case: HPC, intensive workloads  
+
+---
+
+### 2. Spread
+- Instances are **placed on different hardware**
+- 🛡️ High fault tolerance  
+- Use case: critical applications  
+
+---
+
+### 3. Partition
+- Instances are grouped into **isolated partitions**
+- ⚖️ Balance between performance and resilience  
+- Use case: big data (Hadoop, Kafka)
+
+---
+
+## 🧠 Easy way to remember
+
+- **Cluster** → close = fast  
+- **Spread** → separate = safe  
+- **Partition** → grouped = balanced  
+
+---
+
+## ⚡ TL;DR
+Placement Groups = control whether your instances are:
+- close (performance)
+- separated (resilience)
+- grouped (balance)
