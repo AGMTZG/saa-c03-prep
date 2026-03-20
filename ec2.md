@@ -29,7 +29,29 @@ aws ec2 describe-instances
 aws ec2 run-instances \
   --image-id <AMI_ID> \
   --count 1 \
-  --instance-type t2.micro \
+  --instance-type t3.micro \
+  --key-name <KeyPairName> \
+  --security-group-ids <sg-xxxx> \
+  --subnet-id <subnet-xxxx>
+```
+
+</p>
+</details>
+
+### Launch a new EC2 spot instance 
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws ec2 run-instances \
+  --image-id <AMI_ID> \
+  --count 1 \
+  --instance-type t3.micro \
+  --instance-market-options 'MarketType=spot' \
   --key-name <KeyPairName> \
   --security-group-ids <sg-xxxx> \
   --subnet-id <subnet-xxxx>
