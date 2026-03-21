@@ -45,6 +45,22 @@ aws iam create-user --user-name <your user>
 </p>
 </details>
 
+## Create a password for an IAM user and force to change password of first login
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws iam create-login-profile \
+  --user-name USERNAME \
+  --password <password> \
+  --password-reset-required
+```
+</p>
+</details>
+
 ## Delete an user
 
 ---
