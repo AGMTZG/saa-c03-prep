@@ -38,6 +38,21 @@ aws ec2 run-instances \
 </p>
 </details>
 
+### List all Free Tier Instances Types
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws ec2 describe-instance-types --query "InstanceTypes[?FreeTierEligible==\`true\`].InstanceType" --output text
+```
+
+</p>
+</details>
+
 ### Launch a new EC2 spot instance 
 
 ---
