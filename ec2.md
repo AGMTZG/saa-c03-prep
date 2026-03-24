@@ -274,7 +274,7 @@ aws ec2 describe-security-groups --query 'SecurityGroups[].{Name:GroupName,Descr
 <p>
   
 ```bash
-aws ec2 describe-instances --instance-ids <INSTANCE_ID> --query "Reservations[0].Instances[0].PublicIpAddress" --output text
+aws ec2 describe-instances --instance-ids <your instance id> --query "Reservations[].Instances[].PublicIpAddress" --output text
 ```
 
 </p>
@@ -289,7 +289,7 @@ aws ec2 describe-instances --instance-ids <INSTANCE_ID> --query "Reservations[0]
 <p>
   
 ```bash
-aws ec2 describe-instances --instance-ids <instance-id> --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text
+aws ec2 describe-instances --instance-ids <your instance id> --query "Reservations[].Instances[].PrivateIpAddress" --output text
 ```
 
 </p>
@@ -304,7 +304,7 @@ aws ec2 describe-instances --instance-ids <instance-id> --query 'Reservations[*]
 <p>
   
 ```bash
-aws ec2 describe-instances --instance-ids <instance-id> --query 'Reservations[*].Instances[*].PublicDnsName' --output text
+aws ec2 describe-instances --instance-ids <your instance id> --query "Reservations[].Instances[].PublicDnsName" --output text
 ```
 
 </p>
