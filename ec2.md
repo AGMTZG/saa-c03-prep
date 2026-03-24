@@ -641,3 +641,21 @@ aws ec2 describe-snapshots --owner-ids self
 </p>
 </details>
 
+### Copy snapshot from ec2 instance to another region
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+  
+```bash
+aws ec2 copy-snapshot \
+  --source-region <source-region> \
+  --source-snapshot-id <snapshot id> \
+  --region <region> \
+  --description <your description>
+```
+
+</p>
+</details>
