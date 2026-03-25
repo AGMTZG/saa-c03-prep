@@ -286,4 +286,109 @@ Placement Groups = control whether your instances are:
 ### ✅ Use cases
 - Connect instances to a VPC  
 - Move network configuration between instances  
-- Attach multiple network interfaces to one EC2  
+- Attach multiple network interfaces to one EC2
+
+# EC2 Volumes
+
+# AWS EC2 Storage Overview
+
+## 1. EBS (Elastic Block Store)
+**Definition:** Network-attached persistent storage for EC2 instances.
+
+**Key Features:**
+- Persistent even after instance termination (unless root volume with `Delete on Termination`).  
+- Can only be attached to **one instance at a time** (except io1/io2 Multi-Attach).  
+- Bound to an **Availability Zone (AZ)**; moving requires a **snapshot**.  
+- Provisioned capacity: Size (GB) and IOPS; billed based on provisioned capacity.  
+- Snapshots can be copied across AZs or regions.  
+- Volume types:  
+  - **gp2 / gp3 (SSD):** General purpose, balanced price-performance.  
+  - **io1 / io2 / io2 Block Express:** High-performance SSD, low latency, PIOPS.  
+  - **st1 (HDD):** Throughput-optimized, low cost.  
+  - **sc1 (HDD):** Cold storage, infrequently accessed, cheapest.  
+- **Multi-Attach:** io1/io2 volumes can attach to **up to 16 instances** in the same AZ (requires cluster-aware FS).  
+- **Encryption:** At rest, in transit, and snapshots encrypted via KMS (AES-256), transparent to user.  
+
+**Use Cases:**
+- Root or boot volumes for EC2 instances.  
+- Databases requiring consistent IOPS (gp3/io2).  
+- Persistent storage for logs or critical data with snapshot backups.  
+- Multi-Attach for clustered Linux applications (e.g., Teradata).  
+
+---
+
+## 2. EC2 Instance Store
+**Definition:** Local physical storage on the EC2 host.
+
+**Key Features:**
+- Very high IOPS and low latency.  
+- **Ephemeral:** Lost if the instance stops or the host fails.  
+- Best for **temporary data**: buffers, caches, scratch data.  
+
+**Use Cases:**
+- High-performance cache.  
+- Temporary or intermediate storage for data processing.  
+- Scratch space for streaming or big data workloads.  
+
+---
+
+## 3. AMI (Amazon Machine Image)
+**Definition:** Preconfigured EC2 image with OS, software, and settings.
+
+**Types:** Public, private, or AWS Marketplace AMIs.  
+
+**Process:** Stop instance → create AMI → includes EBS snapshots → launch new instances from AMI.  
+
+**Use Cases:**
+- Rapid deployment of identical EC2 instances.  
+- Backup of instance configuration.  
+- Reproducible dev/test environments.  
+
+---
+
+## 4. EBS Snapshots
+**Definition:** Point-in-time backup of EBS volumes.
+
+**Features:**
+- Can copy across AZs or regions.  
+- **Snapshot Archive:** 75% cheaper, restore takes 24–72 hours.  
+- **Recycle Bin:** Recover deleted snapshots, configurable retention.  
+- **Fast Snapshot Restore (FSR):** Initialize snapshot fully to remove first-use latency (extra cost).  
+
+**Use Cases:**
+- Volume backups.  
+- Migration between AZs or regions.  
+- Fast recovery in case of volume failure.  
+
+---
+
+## 5. EFS (Elastic File System)
+**Definition:** Network file system, multi-AZ, POSIX compliant, Linux only.
+
+**Key Features:**
+- Scales automatically; pay-per-use.  
+- Protocol: NFSv4.1, concurrent access for thousands of clients.  
+- **Performance Modes:**  
+  - **General Purpose:** Low-latency, web servers, CMS.  
+  - **Max I/O:** High throughput, parallel workloads.  
+- **Throughput Modes:**  
+  - Bursting (size-based)  
+  - Provisioned (fixed throughput)  
+- **Storage Classes:** Standard, Infrequent Access (EFS-IA), Archive.  
+
+**Use Cases:**
+- Shared content across multiple EC2 instances (e.g., WordPress).  
+- Highly concurrent and scalable workloads.  
+- POSIX-compliant applications needing multi-AZ access.  
+
+---
+
+## 6. Quick Comparison
+
+| Feature                  | EBS                      | Instance Store         | EFS                          |
+|--------------------------|-------------------------|----------------------|-----------------------------|
+| Persistence               | Yes                     | No                   | Yes                          |
+| Multi-AZ                  | No (only snapshot copy) | No                   | Yes                          |
+| Multi-instance Mount      | No (except io2 Multi-Attach) | No               | Yes                          |
+| Performance               | Medium-High             | Very High            | Variable (GP vs Max I/O)    |
+| Typical Use Case          | Boot volumes, DB, apps  | Cache/temp           | Shared files, multi-EC2     |
