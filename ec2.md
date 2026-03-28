@@ -579,37 +579,7 @@ aws ec2 describe-instance-status --instance-ids <instance-id>
 </p>
 </details>
 
-### Enable CloudWatch detailed monitoring
-
----
-
-<details>
-<summary>Show commands / answers</summary>
-<p>
-  
-```bash
-aws ec2 monitor-instances --instance-ids <instance-id>
-```
-
-</p>
-</details>
-
-### Disable CloudWatch detailed monitoring
-
----
-
-<details>
-<summary>Show commands / answers</summary>
-<p>
-  
-```bash
-aws ec2 unmonitor-instances --instance-ids <instance-id>
-```
-
-</p>
-</details>
-
-# Miscellaneous
+# Snapshots
 
 ### Create a snapshot of an EBS volume to back up its current state and data
 
@@ -655,6 +625,220 @@ aws ec2 copy-snapshot \
   --source-snapshot-id <snapshot id> \
   --region <region> \
   --description <your description>
+```
+
+</p>
+</details>
+
+# AWS Load Balancers CLI Cheatsheet
+
+---
+
+## 1. Classic Load Balancer (CLB)
+
+### Create a Classic Load Balancer using HTTP on port 80, forwarding requests to instances on port 80 over HTTP.
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+  
+```bash
+aws elb create-load-balancer \
+  --load-balancer-name <your load balancer name> \
+  --listeners "Protocol=HTTP,LoadBalancerPort=80,InstanceProtocol=HTTP,InstancePort=80" \
+  --subnets subnet-xxxx subnet-yyyy \
+  --security-groups sg-xxxx
+```
+
+</p>
+</details>
+
+
+### Register instances with the load balancer you just created.
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+  
+```bash
+aws elb register-instances-with-load-balancer \
+  --load-balancer-name <your load balancer name> \
+  --instances <your instance ids>
+```
+
+</p>
+</details>
+
+### Configure health check for your load balancer
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+  
+```bash
+aws elb configure-health-check \
+  --load-balancer-name my-clb \
+  --health-check Target=HTTP:80/,Interval=30,Timeout=5,UnhealthyThreshold=2,HealthyThreshold=5
+
+Hace requests a:
+http://<instance-ip>:80/
+```
+
+</p>
+</details>
+
+### List all clasic load balancers
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+  
+```bash
+aws elb describe-load-balancers
+```
+
+</p>
+</details>
+
+### List all classic load balancers
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+  
+```bash
+aws elb describe-load-balancers
+```
+
+</p>
+</details>
+
+### Delete a classic load balancer
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+  
+```bash
+aws elb delete-load-balancer \
+  --load-balancer-name <your load balancer name>
+```
+
+</p>
+</details>
+
+## Applicacion load balancers
+
+### Create an application load balancer
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+  
+```bash
+aws elbv2 create-load-balancer \
+  --name <your load balancer name> \
+  --subnets subnet-xxx subnet-xxx \
+  --security-groups sg-xxx \
+  --scheme internet-facing
+```
+
+</p>
+</details>
+
+### Create Target Group for the load balancer you just created
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+  
+```bash
+aws elbv2 create-target-group \
+  --name <your target application name> \
+  --protocol HTTP \
+  --port 80 \
+  --vpc-id vpc-xxx
+```
+
+</p>
+</details>
+
+### Register the instances in the target group
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+  
+```bash
+aws elbv2 register-targets \
+  --target-group-arn <tg-arn> \
+  --targets Id=i-xxx Id=i-xxx Id=i-xxx
+```
+
+</p>
+</details>
+
+### Create a command that defines how your incoming traffic will enter + port
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+  
+```bash
+aws elbv2 create-listener \
+  --load-balancer-arn <lb-arn> \
+  --protocol HTTP \
+  --port 80 \
+  --default-actions Type=forward,TargetGroupArn=<tg-arn>
+```
+
+</p>
+</details>
+
+
+### List all your new generation of load balancers
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+  
+```bash
+aws elbv2 describe-load-balancers
+```
+
+</p>
+</details>
+
+### List all your target groups
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+  
+```bash
+aws elbv2 describe-target-groups
 ```
 
 </p>
