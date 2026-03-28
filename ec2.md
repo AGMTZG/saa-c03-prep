@@ -693,21 +693,6 @@ http://<instance-ip>:80/
 </p>
 </details>
 
-### List all clasic load balancers
-
----
-
-<details>
-<summary>Show commands / answers</summary>
-<p>
-  
-```bash
-aws elb describe-load-balancers
-```
-
-</p>
-</details>
-
 ### List all classic load balancers
 
 ---
