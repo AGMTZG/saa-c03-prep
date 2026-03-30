@@ -175,109 +175,111 @@ Cons: No built-in discount; you pay regardless of whether you use the capacity
 
 ---
 
-# 🧪 Quick Decision Framework
+# EC2 Spot — Requests, Fleets & Blocks
 
-Ask yourself:
-
-1. Is usage predictable?  
-2. Can the workload be interrupted?  
-3. Do I need guaranteed capacity or compliance?
-
-## 🔹 Spot Instance Requests
-- Up to **90% cheaper** than On-Demand  
-- You define a **max price**  
-- The instance runs while: **spot_price < max_price**
-  - Price **fluctuates dynamically** (supply/demand)
-
-### ⛔ Interruptions
-- If: **spot_price > max_price**
-→ AWS may:
-- stop
-- terminate
-
-- You get a **2-minute warning**
-
-### 🧠 Typical Use Cases
-- Batch jobs  
-- Data processing  
-- Fault-tolerant workloads  
-
-### ❌ Not suitable for
-- Databases  
-- Critical systems
-
-## 🔹 Spot Fleet
-> A set of Spot Instances (+ optional On-Demand Instances)
-
-- Define a **target capacity**
-- AWS fulfills it using multiple pools
-
-### 🔧 You can define:
-- Instance types (e.g., `m5.large`)
-- Availability Zones
-- OS
-- Multiple pools
-
-### 🧠 Behavior
-- AWS selects instances based on:
-- price
-- available capacity
-
-- Stops launching when:
-- target capacity is reached
-- max cost is reached
+> Spot gives you up to 90% savings in exchange for one thing: AWS can take the instance back.
+> Understanding *how* that works — and how to defend against it — is what this section is about.
 
 ---
 
-## ⚙️ Allocation Strategies
+## Spot Instance Requests
+> *"I want cheap compute and I'll set my price ceiling"*
 
-- **lowestPrice**  
-→ cheapest  
-→ less stable  
+You bid a **max price**. The instance runs as long as `spot_price < max_price`.
+Spot price fluctuates based on supply and demand per AZ and instance type.
 
-- **diversified**  
-→ spread across pools  
-→ higher availability  
+### Interruption behavior
+When `spot_price > max_price`, AWS can:
+- **Stop** the instance (if EBS-backed — state is preserved)
+- **Terminate** the instance (data on instance store is lost)
+- **Hibernate** the instance (RAM saved to EBS)
 
-- **capacityOptimized**  
-→ prioritizes pools with capacity  
+You always get a **2-minute warning** via the instance metadata endpoint:
+```
+http://169.254.169.254/latest/meta-data/spot/interruption-notice
+```
 
-- **priceCapacityOptimized (RECOMMENDED)**  
-→ balances price + capacity  
+### Request types (the exam distinguishes these)
 
----
+| Type | Behavior |
+|---|---|
+| One-time | Request fulfilled once; if interrupted, it's gone |
+| Persistent | AWS re-submits the request after interruption until valid or expired |
 
-## 🔹 Spot Block (Legacy ⚠️)
-> Not commonly used anymore
+**Exam trap:** to fully cancel a persistent Spot request, you must **cancel the request first**, then terminate the instance. If you only terminate, AWS re-launches it.
 
-- “Reserve” Spot for:
-- 1 to 6 hours  
-- **No interruptions** during that window (in most cases)
-- May still be reclaimed in rare situations
+### Use cases
+- Batch jobs, ETL pipelines
+- Image/video processing
+- ML training with checkpointing to S3
+- Any stateless, fault-tolerant workload
 
-### 🧠 Typical Use Cases (historical)
-- Short batch jobs  
-- Time-bound processing workloads  
-
----
-
-## 🧩 What is each concept?
-
-| Concept              | Description |
-|----------------------|------------|
-| Spot Instance        | Discounted instance type |
-| Spot Request         | Individual Spot request |
-| Spot Fleet           | Managed group of Spot instances |
-| Spot Block           | Legacy fixed-duration Spot |
+### Not suitable for
+- Databases
+- Critical or stateful systems
+- Anything that can't handle abrupt termination
 
 ---
 
-## ⚡ TL;DR
-- `run-instances` → On-Demand  
-- Spot → cheaper but interruptible  
-- Spot Fleet → automated orchestration  
-- Spot Block → legacy, mostly ignore   
-  
+## Spot Fleet
+> *"I want Spot at scale — across multiple instance types and AZs"*
+
+A Spot Fleet is a **collection of Spot Instances (+ optional On-Demand)** that together meet a target capacity.
+
+Instead of betting on one instance type, you define **multiple pools** and let AWS fulfill the capacity from whichever combination works best.
+
+### What you define
+- Target capacity (units: instances, vCPUs, or memory)
+- One or more **launch templates** with different instance types, AZs, and OS configs
+- Optional On-Demand base capacity (for the critical portion of your workload)
+- Max total cost
+
+AWS stops launching instances when target capacity or max cost is reached.
+
+### Allocation strategies
+
+| Strategy | How it works | Best for |
+|---|---|---|
+| `lowestPrice` | Picks the cheapest pool | Cost-first, short jobs |
+| `diversified` | Spreads across all pools | Long-running, high availability |
+| `capacityOptimized` | Picks pools with most available capacity | Reducing interruptions |
+| `priceCapacityOptimized` ✅ | Balances lowest price + available capacity | **Recommended default** |
+
+**Exam tip:** `priceCapacityOptimized` is the answer when the question asks for *both* cost savings *and* availability. `lowestPrice` is cheaper but gets interrupted more. `diversified` is the answer when the question emphasizes availability over cost.
+
+### Use cases
+- Large-scale batch processing (hundreds of instances)
+- Big data clusters (EMR)
+- CI/CD farms that need to scale quickly
+- ML training distributed across many nodes
+
+---
+
+## Spot Blocks (Legacy ⚠️)
+> *"I need Spot capacity for a fixed window without interruption"*
+
+Spot Blocks let you reserve a Spot Instance for a **defined duration of 1 to 6 hours** with no interruption during that window — in most cases.
+
+AWS has deprecated this feature for new customers. It still appears on the exam as a concept.
+
+### How it differs from a regular Spot request
+
+| | Spot Request | Spot Block |
+|---|---|---|
+| Duration | Indefinite (until interrupted) | Fixed: 1–6 hours |
+| Interruption risk | Yes, anytime | Rare, only in extreme capacity constraints |
+| Price | Fluctuates | Fixed for the duration |
+| Status | Active | Being phased out |
+
+### Historical use cases
+- Short batch jobs with a hard deadline
+- Time-bound processing that couldn't afford mid-job interruption
+- Jobs too short for Reserved Instances but too critical for regular Spot
+
+**Exam approach:** if a question mentions Spot Blocks, it's testing whether you know they existed and what they solved — not whether you'd architect with them today. Prefer Spot Fleet with `capacityOptimized` for modern fault-tolerant designs.
+
+---
+
 # 🧠 AWS Placement Groups – Simple Explanation
 
 ## What are Placement Groups for?
