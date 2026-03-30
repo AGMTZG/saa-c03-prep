@@ -1,91 +1,177 @@
-# 🧠 EC2 Purchasing Options = Problems They Solve
-
-## 🟢 On-Demand  
-> ❓ *“I don’t know what will happen”*
-
-- Unpredictable traffic  
-- Short-term usage  
-- Need instant start/stop  
-
-✅ **Solution:** maximum flexibility  
-❌ **Tradeoff:** expensive  
+# EC2 Purchasing Options — What Problem They Solve
 
 ---
 
-## 🔵 Reserved Instances (RI)  
-> 📊 *“I know exactly what I’ll use”*
+## On-Demand
+> *"I have no idea what's going to happen"*
 
-- Steady workload (e.g. database)  
-- Long-running systems  
-- Predictable capacity  
+**When to use**
+- Unpredictable traffic or sudden spikes
+- Short-term testing, demos, dev environments
+- First time running an app (before committing to anything)
 
-✅ **Solution:** big discount for committing  
-❌ **Tradeoff:** low flexibility  
+**Exam scenarios**
+- Startup that just launched and doesn't know its load profile
+- QA environment that spins up for a few hours
 
----
+**Don't use when** you have predictable workloads — you're paying the highest rate for no reason.
 
-## 🟣 Savings Plans  
-> 🔄 *“I know I’ll use compute, but not exactly how”*
-
-- Predictable usage but changing configs  
-- Might switch instance types  
-
-✅ **Solution:** discount + flexibility  
-❌ **Tradeoff:** time commitment  
+Pros: Maximum flexibility  
+Cons: Most expensive per hour
 
 ---
 
-## 🟡 Spot Instances  
-> 💸 *“I want the cheapest compute possible”*
+## Reserved Instances (RI)
+> *"I know exactly what I'll use for 1 or 3 years"*
 
-- Can tolerate interruptions  
-- Distributed / fault-tolerant systems  
+**When to use**
+- Production databases (MySQL, PostgreSQL, Oracle)
+- Always-on application servers
+- Any stable, predictable workload
 
-✅ **Solution:** massive cost savings  
-❌ **Tradeoff:** can be terminated anytime  
+**Key variants (the exam distinguishes these)**
 
----
+| Type | Flexibility | Discount |
+|---|---|---|
+| Standard RI | Can only change AZ or size (same family) | Higher (~72%) |
+| Convertible RI | Can change family, OS, tenancy | Lower (~54%) |
 
-## 🔴 Dedicated Hosts  
-> ⚖️ *“I have licensing or compliance constraints”*
+**Exam scenarios**
+- RDS instance running 24/7 → Standard RI
+- Workload that might migrate from `m5` to `c5` in the future → Convertible RI
 
-- BYOL (per-core, per-socket licenses)  
-- Regulatory requirements  
+**Exam tip:** Standard RIs can be sold on the *Reserved Instance Marketplace* if you no longer need them.
 
-✅ **Solution:** full physical server control  
-❌ **Tradeoff:** very expensive  
-
----
-
-## 🟠 Dedicated Instances  
-> 🔐 *“I need isolation, but not full hardware control”*
-
-- No shared hardware with other customers  
-
-✅ **Solution:** tenant isolation  
-❌ **Tradeoff:** less control than hosts  
+Pros: Big discount with commitment  
+Cons: Low flexibility; you're billed even if you don't use the instance
 
 ---
 
-## 🟤 Capacity Reservations  
-> 🚨 *“I MUST have capacity available”*
+## Savings Plans
+> *"I know how much compute I'll consume, but not exactly how"*
 
-- Critical workloads  
-- Need guaranteed capacity in AZ  
+**When to use**
+- You use Lambda + EC2 + Fargate in combination
+- You change instance types frequently
+- You want a discount without locking into a specific instance
 
-✅ **Solution:** capacity guarantee  
-❌ **Tradeoff:** no discount, pay even if unused  
+**Key variants**
+
+| Type | Scope | Covers |
+|---|---|---|
+| Compute SP | Any region, family, OS | EC2, Lambda, Fargate |
+| EC2 Instance SP | Fixed family + region | EC2 only, higher discount |
+
+**Exam scenarios**
+- Company with microservices on Lambda and containers on ECS Fargate → Compute Savings Plan
+- Only ever running `m5` in `us-east-1` → EC2 Instance SP (cheaper)
+
+Pros: Discount + configuration flexibility  
+Cons: Committed to a $/hour spend for 1 or 3 years
 
 ---
 
-# ⚡ Ultra-Compact Mental Model
+## Spot Instances
+> *"I want the cheapest compute and can tolerate interruptions"*
 
-- Don’t know usage → **On-Demand**  
-- Know usage → **Reserved / Savings Plans**  
-- Want cheapest → **Spot**  
-- Need compliance → **Dedicated Hosts**  
-- Need isolation → **Dedicated Instances**  
-- Need guaranteed capacity → **Capacity Reservations**  
+**When to use**
+- Batch jobs, image/video processing
+- Machine learning training
+- Big data (EMR), distributed analytics
+- Workloads you can pause and resume
+
+**When NOT to use (critical for the exam)**
+- Databases
+- Applications that can't be interrupted (production e-commerce)
+- Anything stateful that you can't checkpoint
+
+**Key mechanics**
+- AWS gives you a **2-minute warning** before terminating your instance
+- If the spot price exceeds your bid → instance is terminated
+- **Spot Blocks** (fixed duration 1–6h): the exam mentions them but they are being discontinued
+
+**Exam scenarios**
+- Rendering movie frames → Spot (if a node fails, just re-render)
+- Training an ML model overnight → Spot + checkpoint state to S3
+
+Pros: Up to 90% cheaper than On-Demand  
+Cons: Can be terminated at any time
+
+---
+
+## Dedicated Hosts
+> *"I have licenses tied to physical hardware"*
+
+**When to use**
+- Software with **per-socket** or **per-core** licenses (Oracle DB, Windows Server, SQL Server)
+- Compliance requiring knowledge of the exact physical server
+- Regulations that prohibit hardware-level multi-tenancy
+
+**Key difference vs Dedicated Instances**
+- Dedicated Host: **you control VM placement** on the physical server. You can see the number of sockets/cores.
+- Dedicated Instance: AWS manages the hardware; it only guarantees no sharing with other accounts.
+
+**Exam scenarios**
+- Bank with audits requiring a documented dedicated server → Dedicated Host
+- Existing Oracle DB with a per-socket license → Dedicated Host (BYOL)
+
+Pros: Full physical server control, BYOL support  
+Cons: Most expensive; you reserve the entire host even if not fully utilized
+
+---
+
+## Dedicated Instances
+> *"I need hardware isolation, but don't care about the exact server"*
+
+**When to use**
+- Internal security policies that prohibit shared hardware
+- Moderate compliance requirements (not at the Dedicated Host level)
+
+**What it guarantees:** your instance does not share hardware with instances from **other AWS accounts**.  
+**What it does NOT guarantee:** you may still share the same host with other instances from **your own account**.
+
+**Exam scenarios**
+- Company with a no-shared-hardware-with-third-parties policy but no per-socket licenses → Dedicated Instance
+
+Pros: Hardware isolation without managing the host  
+Cons: More expensive than On-Demand; less control than Dedicated Host
+
+---
+
+## Capacity Reservations
+> *"I MUST have capacity available — cost is secondary"*
+
+**When to use**
+- Disaster recovery: you must be able to launch instances in a specific AZ under any circumstance
+- Critical time-bound events (product launches, Black Friday)
+- Regulated workloads requiring guaranteed availability
+
+**Details the exam exploits**
+- No discount on their own — **combine with RI or Savings Plans** to get a discount
+- You're billed even if you never launch an instance
+- Scoped **per AZ**, not per region — you must specify the AZ
+
+**Exam scenarios**
+- Need to guarantee you can launch 50 `c5.4xlarge` instances in `us-east-1a` during an event → Capacity Reservation + RI for the discount
+
+Pros: Guaranteed capacity in a specific AZ  
+Cons: No built-in discount; you pay regardless of whether you use the capacity
+
+---
+
+## Quick Decision Table
+
+| Situation | Option |
+|---|---|
+| No idea how much I'll use | On-Demand |
+| Stable workload, same instance for years | Standard RI |
+| Stable workload, might change instance family | Convertible RI or Savings Plan |
+| Mix of Lambda + EC2 + Fargate | Compute Savings Plan |
+| Fault-tolerant batch jobs | Spot |
+| Oracle/Windows per-socket licenses | Dedicated Host |
+| Hardware isolation without BYOL | Dedicated Instance |
+| Capacity guarantee for DR or events | Capacity Reservation |
+| Want discount AND capacity guarantee | Capacity Reservation + RI |
 
 ---
 
